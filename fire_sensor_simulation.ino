@@ -3,9 +3,9 @@
 #define photo_Pin A2
 #define alert_Pin 12
 
-//thershold
-const float temp_Thershold = 50.0;
-const int light_Thershold = 220;
+//threshold
+const float temp_Threshold = 50.0;
+const int light_Threshold = 220;
 
 const int beta = 3950;
 const int resistance = 10;
@@ -25,7 +25,7 @@ void loop() {
   Serial.print(" °C | Brightness: ");
   Serial.println(brightness);
 
-  if (temperature >= temp_Thershold && brightness <= light_Thershold) {
+  if (temperature >= temp_Threshold && brightness <= light_Threshold) {
     digitalWrite(alert_Pin, HIGH);
     delay(100);
     digitalWrite(alert_Pin, LOW);
