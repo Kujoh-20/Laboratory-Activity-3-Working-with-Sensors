@@ -4,7 +4,7 @@
 #define alert_Pin 12
 
 // Thresholds
-const float temp_Threshold = 40.0; // Celsius
+const float temp_Threshold = 50.0; // Celsius
 const int light_Threshold = 220;   // Brightness
 
 const int beta = 3950;
