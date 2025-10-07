@@ -1,14 +1,14 @@
-//define PINS
+// Define PINS
 #define thermistor_Pin A0
 #define photo_Pin A2
 #define alert_Pin 12
 
-//threshold
-const float temp_Threshold = 50.0;
-const int light_Threshold = 220;
+// Thresholds
+const float temp_Threshold = 40.0; // Celsius
+const int light_Threshold = 220;   // Brightness
 
 const int beta = 3950;
-const int resistance = 10;
+const int resistance = 10000; // 10k ohm fixed resistor
 
 void setup() {
   pinMode(alert_Pin, OUTPUT);
@@ -16,7 +16,6 @@ void setup() {
 }
 
 void loop() {
-
   float temperature = readTemperature();
   int brightness = readBrightness();
 
@@ -25,7 +24,7 @@ void loop() {
   Serial.print(" °C | Brightness: ");
   Serial.println(brightness);
 
-  if (temperature >= temp_Threshold && brightness <= light_Threshold) {
+  if (temperature >= temp_Threshold && brightness >= light_Threshold) {
     digitalWrite(alert_Pin, HIGH);
     delay(100);
     digitalWrite(alert_Pin, LOW);
@@ -39,13 +38,12 @@ void loop() {
 
 float readTemperature() {
   int analogValue = analogRead(thermistor_Pin);
-
-  float tempC = beta / (log((1025.0 * resistance / analogValue - resistance) / resistance) + beta / 298.0) - 273.0;
-
+  float R = (1023.0 / analogValue - 1.0) * resistance; // Thermistor resistance
+  float tempK = 1.0 / (log(R / resistance) / beta + 1.0 / 298.15);
+  float tempC = tempK - 273.15;
   return tempC;
 }
 
 int readBrightness() {
-  int brightness = analogRead(photo_Pin);
-  return brightness;
+  return analogRead(photo_Pin);
 }
